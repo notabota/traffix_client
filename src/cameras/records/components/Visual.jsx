@@ -75,7 +75,7 @@ const Visual = () => {
                 `
             const variables = {
                 cameraId: cameraID,
-                sort: "begin_ts:desc",
+                sort: "end_ts:desc",
             }
             const options = {
                 method: 'POST',

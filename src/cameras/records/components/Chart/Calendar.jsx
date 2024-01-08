@@ -20,14 +20,18 @@ const Calendar = ({recordsData, chartSubtype, chartOptions}) => {
 
     if (calendarOptions.beginYear == null) {
         calendarOptions.beginYear = dayjs(recordsData[0].begin_ts);
+        for (const record of recordsData) {
+            if (dayjs(record.begin_ts).isBefore(calendarOptions.beginYear))
+                calendarOptions.beginYear = dayjs(record.begin_ts)
+        }
     }
     if (calendarOptions.endYear == null) {
         calendarOptions.endYear = dayjs(recordsData[0].end_ts);
     }
 
     for (const record of recordsData) {
-        const beginTimestamp = dayjs(recordsData[0].begin_ts);
-        const endTimestamp = dayjs(recordsData[0].end_ts);
+        const beginTimestamp = dayjs(record.begin_ts);
+        const endTimestamp = dayjs(record.end_ts);
         let currentTimestamp = beginTimestamp;
         while (currentTimestamp.isSameOrBefore(endTimestamp, 'day')) {
             const currentTimestampFormat = currentTimestamp.format('YYYY-MM-DD')
