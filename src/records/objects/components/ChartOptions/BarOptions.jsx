@@ -9,9 +9,9 @@ import {ObjectsProps} from '../../data/ObjectsProps'
 
 export const BarOptionsTimeStep = ({chartOptions, onChartOptionsChange}) => {
     const [objects, setObjects] = useState(chartOptions.objects);
-    const [begin, setBegin] = useState(null);
-    const [end, setEnd] = useState(null);
-    const [delta, setDelta] = useState(null);
+    const [begin, setBegin] = useState(chartOptions.begin);
+    const [end, setEnd] = useState(chartOptions.end);
+    const [delta, setDelta] = useState(chartOptions.delta);
 
     const onObjectsChange = (event, newObjects) => {
         setObjects(newObjects);
@@ -79,9 +79,6 @@ export const BarOptionsTimeStep = ({chartOptions, onChartOptionsChange}) => {
                             slotProps={{
                                 field: {
                                     clearable: true,
-                                    onClear: () => {
-                                        onBeginChange(null);
-                                    },
                                 },
                             }}
                         />
@@ -97,9 +94,6 @@ export const BarOptionsTimeStep = ({chartOptions, onChartOptionsChange}) => {
                             slotProps={{
                                 field: {
                                     clearable: true,
-                                    onClear: () => {
-                                        onEndChange(null);
-                                    },
                                 },
                             }}
                         />
@@ -114,9 +108,6 @@ export const BarOptionsTimeStep = ({chartOptions, onChartOptionsChange}) => {
                                     slotProps={{
                                         field: {
                                             clearable: true,
-                                            onClear: () => {
-                                                onDeltaChange(null);
-                                            },
                                         },
                                     }}
                         />

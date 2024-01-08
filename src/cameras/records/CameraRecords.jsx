@@ -9,7 +9,7 @@ import Visual from "./components/Visual";
 
 const queryClient = new QueryClient();
 
-const RecordObjects = () => (
+const CameraRecords = () => (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <QueryClientProvider client={queryClient}>
             <Visual/>
@@ -17,4 +17,4 @@ const RecordObjects = () => (
     </LocalizationProvider>
 );
 
-export default RecordObjects;
+export default CameraRecords;

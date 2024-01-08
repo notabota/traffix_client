@@ -9,8 +9,8 @@ import {ObjectsProps} from '../../data/ObjectsProps'
 
 export const LineOptionsLinear = ({chartOptions, onChartOptionsChange}) => {
     const [objects, setObjects] = useState(chartOptions.objects);
-    const [begin, setBegin] = useState(null);
-    const [end, setEnd] = useState(null);
+    const [begin, setBegin] = useState(chartOptions.begin);
+    const [end, setEnd] = useState(chartOptions.end);
 
     const onObjectsChange = (event, newObjects) => {
         setObjects(newObjects);
@@ -21,6 +21,8 @@ export const LineOptionsLinear = ({chartOptions, onChartOptionsChange}) => {
     };
 
     const onBeginChange = (newBegin) => {
+        console.log('Begin changed')
+        console.log(newBegin)
         setBegin(newBegin);
         onChartOptionsChange({
             ...chartOptions,
@@ -70,9 +72,6 @@ export const LineOptionsLinear = ({chartOptions, onChartOptionsChange}) => {
                             slotProps={{
                                 field: {
                                     clearable: true,
-                                    onClear: () => {
-                                        onBeginChange(null);
-                                    },
                                 },
                             }}
                         />
@@ -88,9 +87,6 @@ export const LineOptionsLinear = ({chartOptions, onChartOptionsChange}) => {
                             slotProps={{
                                 field: {
                                     clearable: true,
-                                    onClear: () => {
-                                        onEndChange(null);
-                                    },
                                 },
                             }}
                         />
@@ -103,9 +99,9 @@ export const LineOptionsLinear = ({chartOptions, onChartOptionsChange}) => {
 
 export const LineOptionsTimeStep = ({chartOptions, onChartOptionsChange}) => {
     const [objects, setObjects] = useState(chartOptions.objects);
-    const [begin, setBegin] = useState(null);
-    const [end, setEnd] = useState(null);
-    const [delta, setDelta] = useState(null);
+    const [begin, setBegin] = useState(chartOptions.begin);
+    const [end, setEnd] = useState(chartOptions.end);
+    const [delta, setDelta] = useState(chartOptions.delta);
 
     const onObjectsChange = (event, newObjects) => {
         setObjects(newObjects);
@@ -173,9 +169,6 @@ export const LineOptionsTimeStep = ({chartOptions, onChartOptionsChange}) => {
                             slotProps={{
                                 field: {
                                     clearable: true,
-                                    onClear: () => {
-                                        onBeginChange(null);
-                                    },
                                 },
                             }}
                         />
@@ -191,9 +184,6 @@ export const LineOptionsTimeStep = ({chartOptions, onChartOptionsChange}) => {
                             slotProps={{
                                 field: {
                                     clearable: true,
-                                    onClear: () => {
-                                        onEndChange(null);
-                                    },
                                 },
                             }}
                         />
@@ -208,9 +198,6 @@ export const LineOptionsTimeStep = ({chartOptions, onChartOptionsChange}) => {
                                     slotProps={{
                                         field: {
                                             clearable: true,
-                                            onClear: () => {
-                                                onDeltaChange(null);
-                                            },
                                         },
                                     }}
                         />

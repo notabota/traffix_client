@@ -4,6 +4,7 @@ import './index.css';
 import Map from './map/Map';
 import Records from "./records/Records"
 import RecordObjects from "./records/objects/RecordObjects";
+import Cameras from "./cameras/Cameras";
 import Objects from "./objects/Objects"
 
 import {
@@ -11,6 +12,7 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import {createTheme, ThemeProvider} from '@mui/material/styles';
+import CameraRecords from "./cameras/records/CameraRecords";
 
 const theme = createTheme({
     typography: {
@@ -33,8 +35,16 @@ const router = createBrowserRouter([
     },
     {
         path: "/cameras",
+        element: <Cameras/>,
+    },
+    {
+        path: "/cameras/:cameraID",
+        element: <CameraRecords/>,
+    },
+    {
+        path: "/objects",
         element: <Objects/>,
-    }
+    },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

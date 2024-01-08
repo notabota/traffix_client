@@ -6,14 +6,15 @@ const LineChart = ({objectsData, chartSubtype, chartOptions}) => {
     const chartData = [];
     const lineChartOptions = {...chartOptions}
 
-    if (lineChartOptions.begin === null) {
+    if (lineChartOptions.begin == null) {
         lineChartOptions.begin = dayjs(objectsData[0].ts)
     }
-    if (lineChartOptions.end === null) {
+    if (lineChartOptions.end == null) {
         lineChartOptions.end = dayjs(objectsData.at(-1).ts)
     }
     lineChartOptions.begin = lineChartOptions.begin.valueOf()
     lineChartOptions.end = lineChartOptions.end.valueOf()
+
 
     const filteredData = [];
     for (const object of objectsData) {
@@ -48,7 +49,7 @@ const LineChart = ({objectsData, chartSubtype, chartOptions}) => {
         })
 
     } else if (chartSubtype.id === 1) {
-        if (lineChartOptions.delta === null) lineChartOptions.delta = 30 * 1000;
+        if (lineChartOptions.delta == null) lineChartOptions.delta = 30 * 1000;
         else if (lineChartOptions.delta.hour() === 0
             && lineChartOptions.delta.minute() === 0
             && lineChartOptions.delta.second() === 0) return <p> Delta must greater not be 0</p>

@@ -5,7 +5,7 @@ import {
 
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import ObjectsTable from "./components/CamerasTable";
+import CamerasTable from "./components/CamerasTable";
 
 const queryClient = new QueryClient();
 

@@ -24,12 +24,11 @@ import Markers from "./Markers";
 
 const MapLayer = () => {
 
-    const [map, setMap] = useState(null);
-    const [camera, setCamera] = useState(null);
+    const [map, setMap] = useState();
+    const [camera, setCamera] = useState();
 
     const onCameraChange = (event, newCamera) => {
         setCamera(newCamera)
-        console.log(map)
         map.flyTo(center, 16)
     }
 

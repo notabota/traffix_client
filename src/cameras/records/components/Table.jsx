@@ -1,28 +1,17 @@
 import {useMemo, useState} from "react";
 import * as ExcelJS from "exceljs";
-import {keepPreviousData, useQuery} from "@tanstack/react-query";
+import Box from "@mui/material/Box";
+import TimestampRangePicker from "./TimestampRangePicker";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
-import {Box, Button, IconButton, Tooltip} from "@mui/material";
-import DatasetIcon from "@mui/icons-material/Dataset";
-import RefreshIcon from "@mui/icons-material/Refresh";
+import {Button} from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import TimestampPicker from "./TimestampPicker";
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 import FileSaver from 'file-saver';
+import StatisticsTable from './StatisticsTable'
+import {RecordsProps} from "../data/RecordsProps";
+import TimestampPicker from "../../../records/components/TimestampPicker";
 
-const openInNewTab = url => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-};
-
-const RecordsTable = () => {
-    // manage our own state for stuff we want to pass to the API
-    const [columnFilters, setColumnFilters] = useState([]);
-    const [globalFilter, setGlobalFilter] = useState('');
-    const [sorting, setSorting] = useState([]);
-    const [pagination, setPagination] = useState({
-        pageIndex: 0,
-        pageSize: 10,
-    });
+const Table = ({recordsData}) => {
 
     const onExportRows = (rows) => {
         const rowData = rows.map((row) => row.original);
@@ -57,63 +46,6 @@ const RecordsTable = () => {
         });
     };
 
-    // consider storing this code in a custom hook (i.e useFetchUsers)
-    const {
-        data = [],
-        isError,
-        isRefetching,
-        isLoading,
-        refetch,
-    } = useQuery({
-        refetchInterval: (query) => {
-            return query.state.error ? 0 : 10 * 1000
-        },
-        queryKey: [
-            'table-data',
-            // columnFilters, //refetch when columnFilters changes
-            // globalFilter, //refetch when globalFilter changes
-            // pagination.pageIndex, //refetch when pagination.pageIndex changes
-            // pagination.pageSize, //refetch when pagination.pageSize changes
-            // sorting, //refetch when sorting changes
-        ],
-        queryFn: async () => {
-            const query = `
-                query Record {
-                  records {
-                    id
-                    name
-                    description
-                    begin_ts
-                    end_ts
-                    camera_id
-                  }
-                }
-            `
-            const variables = {}
-
-            const fetchURL = new URL(
-                import.meta.env.VITE_API_HOST
-            );
-
-            const headers = new Headers();
-            // headers.append('pragma', 'no-cache');
-            // headers.append('cache-control', 'no-cache');
-            headers.append('Content-Type', 'application/json')
-
-            const options = {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify({query, variables})
-            };
-
-            const response = await fetch(fetchURL.href, options);
-            const json = await response.json();
-            return json['data']['records'];
-        },
-
-        placeholderData: keepPreviousData, //don't go to 0 rows when refetching or paginating to next page
-    });
-
     const [date, setDate] = useState();
 
     const onDateChange = (props, newDate) => {
@@ -146,13 +78,7 @@ const RecordsTable = () => {
                 sortingFn: 'datetime',
                 filterFn: 'lessThanOrEqualTo',
                 Filter: (props) => <TimestampPicker {...props} onDateChange={onDateChange}/>,
-            },
-            {
-                accessorKey: 'camera_id',
-                type: 'number',
-                header: 'Camera',
-                filterVariant: 'select',
-            },
+            }
         ],
         [],
         //end
@@ -160,21 +86,7 @@ const RecordsTable = () => {
 
     const table = useMaterialReactTable({
         columns,
-        data,
-        isFullScreen: true,
-        enableRowActions: true,
-        renderRowActions: function ({row}) {
-            return (
-                <Box>
-                    <IconButton onClick={() => {
-                        openInNewTab('/records/' + row.original.id)
-                    }
-                    }>
-                        <DatasetIcon/>
-                    </IconButton>
-                </Box>
-            )
-        },
+        data: recordsData,
         renderTopToolbarCustomActions: () => (
             <Box
                 sx={{
@@ -184,21 +96,16 @@ const RecordsTable = () => {
                     flexWrap: 'wrap',
                 }}
             >
-                <Tooltip arrow title="Refresh Data">
-                    <IconButton onClick={() => refetch()}>
-                        <RefreshIcon/>
-                    </IconButton>
-                </Tooltip>
                 <Button
-                    //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-                    onClick={() => onExportData(data)}
+                    // export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                    onClick={() => onExportData(recordsData)}
                     startIcon={<FileDownloadIcon/>}
                 >
                     Export All Data
                 </Button>
                 <Button
                     disabled={table.getPrePaginationRowModel().rows.length === 0}
-                    //export all rows, including from the next page, (still respects filtering and sorting)
+                    // export all rows, including from the next page, (still respects filtering and sorting)
                     onClick={() =>
                         onExportRows(table.getPrePaginationRowModel().rows)
                     }
@@ -208,7 +115,7 @@ const RecordsTable = () => {
                 </Button>
                 <Button
                     disabled={table.getRowModel().rows.length === 0}
-                    //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+                    // export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
                     onClick={() => onExportRows(table.getRowModel().rows)}
                     startIcon={<FileDownloadIcon/>}
                 >
@@ -227,19 +134,6 @@ const RecordsTable = () => {
             </Box>
         ),
         initialState: {showColumnFilters: true},
-        // manualFiltering: true, //turn off built-in client-side filtering
-        // manualPagination: true, //turn off built-in client-side pagination
-        // manualSorting: true, //turn off built-in client-side sorting
-        muiToolbarAlertBannerProps: isError
-            ? {
-                color: 'error',
-                children: 'Error loading data',
-            }
-            : undefined,
-        // onColumnFiltersChange: setColumnFilters,
-        // onGlobalFilterChange: setGlobalFilter,
-        // onPaginationChange: setPagination,
-        // onSortingChange: setSorting,
         enableFacetedValues: true,
         filterFns: {
             timestampFilterFn: (row, id, filterValue) => {
@@ -258,18 +152,12 @@ const RecordsTable = () => {
         },
         enableColumnResizing: true,
         layoutMode: 'grid', //instead of the default "grid-no-grow" when column resizing is enabled
-        state: {
-            // columnFilters,
-            // globalFilter,
-            // sorting,
-            // pagination,
-            isLoading,
-            showAlertBanner: isError,
-            showProgressBars: isRefetching,
-        }
     });
 
-    return <MaterialReactTable table={table}/>;
+    return <Box>
+        <MaterialReactTable table={table}/>
+        <StatisticsTable table={table}/>
+    </Box>;
 };
 
-export default RecordsTable
+export default Table

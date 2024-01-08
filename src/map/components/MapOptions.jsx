@@ -1,11 +1,10 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
-import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import PrintIcon from '@mui/icons-material/Print';
+import PhotoCameraFrontIcon from '@mui/icons-material/PhotoCameraFront';
+import SdStorageIcon from '@mui/icons-material/SdStorage';
+import CommuteIcon from '@mui/icons-material/Commute';
 import ShareIcon from '@mui/icons-material/Share';
 import {useNavigate} from "react-router-dom";
 
@@ -18,16 +17,18 @@ export default function MapOptions() {
 
     const actions = [
         {
-            icon: <FileCopyIcon/>, name: 'Copy', onClick: () => {
+            icon: <PhotoCameraFrontIcon/>, name: 'Cameras', onClick: () => {
                 window.open('/cameras', '_blank')
             }
         },
         {
-            icon: <SaveIcon/>, name: 'Save', onClick: () => {
+            icon: <SdStorageIcon/>, name: 'Records', onClick: () => {
                 window.open('/records', '_blank')
             }
         },
-        {icon: <PrintIcon/>, name: 'Print'},
+        {icon: <CommuteIcon/>, name: 'Objects', onClick: () => {
+                window.open('/objects', '_blank')
+            }},
         {
             icon: <ShareIcon/>, name: 'Share', onClick: () => {
 

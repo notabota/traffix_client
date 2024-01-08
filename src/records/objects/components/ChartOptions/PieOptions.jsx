@@ -8,8 +8,8 @@ import {ObjectsProps} from '../../data/ObjectsProps'
 
 export const PieOptionsTimeLinear = ({chartOptions, onChartOptionsChange}) => {
     const [objects, setObjects] = useState(chartOptions.objects);
-    const [begin, setBegin] = useState(null);
-    const [end, setEnd] = useState(null);
+    const [begin, setBegin] = useState(chartOptions.begin);
+    const [end, setEnd] = useState(chartOptions.end);
 
     const onObjectsChange = (event, newObjects) => {
         setObjects(newObjects);
@@ -69,9 +69,6 @@ export const PieOptionsTimeLinear = ({chartOptions, onChartOptionsChange}) => {
                             slotProps={{
                                 field: {
                                     clearable: true,
-                                    onClear: () => {
-                                        onBeginChange(null);
-                                    },
                                 },
                             }}
                         />
@@ -87,9 +84,6 @@ export const PieOptionsTimeLinear = ({chartOptions, onChartOptionsChange}) => {
                             slotProps={{
                                 field: {
                                     clearable: true,
-                                    onClear: () => {
-                                        onEndChange(null);
-                                    },
                                 },
                             }}
                         />

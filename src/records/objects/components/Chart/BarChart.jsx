@@ -8,10 +8,10 @@ const BarChart = ({objectsData, chartSubtype, chartOptions}) => {
     const barChartOptions = {...chartOptions}
     const objectsTimestamp = {};
 
-    if (barChartOptions.begin === null) {
+    if (barChartOptions.begin == null) {
         barChartOptions.begin = dayjs(objectsData[0].ts)
     }
-    if (barChartOptions.end === null) {
+    if (barChartOptions.end == null) {
         barChartOptions.end = dayjs(objectsData.at(-1).ts)
     }
     barChartOptions.begin = barChartOptions.begin.valueOf()
@@ -25,7 +25,7 @@ const BarChart = ({objectsData, chartSubtype, chartOptions}) => {
     }
 
     if (chartSubtype.id === 0) {
-        if (barChartOptions.delta === null) barChartOptions.delta = 30 * 1000;
+        if (barChartOptions.delta == null) barChartOptions.delta = 30 * 1000;
         else if (barChartOptions.delta.hour() === 0
             && barChartOptions.delta.minute() === 0
             && barChartOptions.delta.second() === 0) return <p> Delta must greater not be 0</p>

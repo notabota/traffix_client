@@ -1,6 +1,6 @@
 import {ResponsivePie} from '@nivo/pie'
 import dayjs from "dayjs";
-import {ObjectsProps} from "../..//data/ObjectsProps";
+import {ObjectsProps} from "../../data/ObjectsProps";
 
 const PieChart = ({objectsData, chartSubtype, chartOptions}) => {
     const chartData = [];
@@ -8,10 +8,10 @@ const PieChart = ({objectsData, chartSubtype, chartOptions}) => {
     const pieChartOptions = {...chartOptions}
     const objectsTimestamp = {};
 
-    if (pieChartOptions.begin === null) {
+    if (pieChartOptions.begin == null) {
         pieChartOptions.begin = dayjs(objectsData[0].ts)
     }
-    if (pieChartOptions.end === null) {
+    if (pieChartOptions.end == null) {
         pieChartOptions.end = dayjs(objectsData.at(-1).ts)
     }
     pieChartOptions.begin = pieChartOptions.begin.valueOf()

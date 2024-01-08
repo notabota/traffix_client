@@ -54,7 +54,9 @@ const CamerasTable = () => {
         isLoading,
         refetch,
     } = useQuery({
-        refetchInterval: 1000,
+        refetchInterval: (query) => {
+    return query.state.error ? 0 : 10 * 1000
+},
         queryKey: [
             'table-data',
         ],
@@ -117,25 +119,28 @@ const CamerasTable = () => {
                 accessorKey: 'counting_state',
                 header: 'Counting State',
                 filterVariant: 'select',
-                // Cell: ({cell}) => (
-                //     <Box
-                //         display="flex"
-                //         justifyContent="center"
-                //         alignItems="center"
-                //         component="span"
-                //         sx={(theme) => ({
-                //             backgroundColor: cell.getValue() ? theme.palette.success.light : theme.palette.error.light,
-                //             borderRadius: '0.25rem',
-                //             color: '#fff',
-                //             maxWidth: '9ch',
-                //             p: '0.25rem',
-                //             width: '9ch',
-                //             fontWeight: 'bold'
-                //         })}
-                //     >
-                //         {cell.getValue() ? 'True' : 'False'}
-                //     </Box>
-                // ),
+                accessorFn: (row) => {
+                    return row.counting_state ? 'True' : 'False'
+                },
+                Cell: ({cell}) => (
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        component="span"
+                        sx={(theme) => ({
+                            backgroundColor: cell.getValue() === 'True' ? theme.palette.success.light : theme.palette.error.light,
+                            borderRadius: '0.25rem',
+                            color: '#fff',
+                            maxWidth: '9ch',
+                            p: '0.25rem',
+                            width: '9ch',
+                            fontWeight: 'bold'
+                        })}
+                    >
+                        {cell.getValue()}
+                    </Box>
+                ),
             },
             {
                 accessorKey: 'url',
@@ -158,7 +163,6 @@ const CamerasTable = () => {
             return (
                 <Box>
                     <IconButton onClick={() => {
-                        console.log(row)
                         openInNewTab('/cameras/' + row.original.id)
                     }
                     }>

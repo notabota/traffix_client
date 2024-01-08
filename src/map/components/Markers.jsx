@@ -11,7 +11,9 @@ const Markers = () => {
         isLoading,
         refetch,
     } = useQuery({
-        refetchInterval: 1000,
+        refetchInterval: (query) => {
+    return query.state.error ? 0 : 10 * 1000
+},
         queryKey: [
             'markers-data',
         ],
